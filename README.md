@@ -1,4 +1,4 @@
-# cmpe487_thrust
+# PageRank_Thrust
 
 This is an implementation of Google's PageRank algorithm that processes and ranks the websites in the web graph provided by [web-graph.org](http://web-graph.org).
 

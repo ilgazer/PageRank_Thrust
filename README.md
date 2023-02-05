@@ -12,22 +12,21 @@ The most challanging part of the program, in our opinion, was writing the parall
 
 One critical consideration while creating the operator was avoiding using branches, as taking different branches in different threads comes with a big performance penalty in GPUs. We were able to achieve this by leveraging the inbuilt compare-and-swap facility of GPU by using the C ternary operator. Here is a pseudocode of our merging algorithm:
 
-\begin{lstlisting}[style=CStyle]
-site[5] merge_arrs(site[5] a, site[5] b)
-{
-    site[5] result;
-
-    size_t a_index = 0;
-    size_t b_index = 0;
-    for (size_t i = 0; i < 5; i++)
+    site[5] merge_arrs(site[5] a, site[5] b)
     {
-        int is_b_larger = a[a_index].score < b[b_index].score;
-        result[i] = is_b_larger ? b[b_index] : a[a_index];
-        b_index += is_b_larger;
-        a_index += (1 - is_b_larger);
+        site[5] result;
+
+        size_t a_index = 0;
+        size_t b_index = 0;
+        for (size_t i = 0; i < 5; i++)
+        {
+            int is_b_larger = a[a_index].score < b[b_index].score;
+            result[i] = is_b_larger ? b[b_index] : a[a_index];
+            b_index += is_b_larger;
+            a_index += (1 - is_b_larger);
+        }
+        return result;
     }
-    return result;
-}
-\end{lstlisting}
+
 
 As the main point of improvement for our program, we could highlight our use of reduce-by-key for calculating the result vector. Even though we did not have enough time to devise an algorithm for multiplying a vector with a CSR matrix, we believe that its implementation would avoid the inefficiency of also calculating the unique values in our row vector each time the result is calculated.
